@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import opencv.ExtratorImagem;
 
 /**
  *
@@ -31,6 +32,15 @@ public class Preditor extends javax.swing.JFrame {
         btnSelecionarImagem = new javax.swing.JButton();
         txtCaminhoImagem = new javax.swing.JTextField();
         lblImagem = new javax.swing.JLabel();
+        btnExtraiCaracteristicas = new javax.swing.JButton();
+        lblCaracteristicasBart = new javax.swing.JLabel();
+        lblCaracteristicasHomer = new javax.swing.JLabel();
+        lblLaranjaBart = new javax.swing.JLabel();
+        lblAzulCalcao = new javax.swing.JLabel();
+        lblAzulSapato = new javax.swing.JLabel();
+        lblAzulHomer = new javax.swing.JLabel();
+        lblMarromHomer = new javax.swing.JLabel();
+        lblSapatoHomer = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -43,6 +53,29 @@ public class Preditor extends javax.swing.JFrame {
 
         lblImagem.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        btnExtraiCaracteristicas.setText("Extrair Características");
+        btnExtraiCaracteristicas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExtraiCaracteristicasActionPerformed(evt);
+            }
+        });
+
+        lblCaracteristicasBart.setText("Características do Bart");
+
+        lblCaracteristicasHomer.setText("Características do Homer");
+
+        lblLaranjaBart.setText("jLabel1");
+
+        lblAzulCalcao.setText("jLabel2");
+
+        lblAzulSapato.setText("jLabel3");
+
+        lblAzulHomer.setText("jLabel4");
+
+        lblMarromHomer.setText("jLabel5");
+
+        lblSapatoHomer.setText("jLabel6");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -51,12 +84,34 @@ public class Preditor extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblImagem, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 384, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(btnSelecionarImagem)
                         .addGap(18, 18, 18)
-                        .addComponent(txtCaminhoImagem)))
+                        .addComponent(txtCaminhoImagem))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblImagem, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnExtraiCaracteristicas)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lblCaracteristicasBart, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGap(77, 77, 77))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblLaranjaBart)
+                                    .addComponent(lblAzulCalcao)
+                                    .addComponent(lblAzulSapato))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblCaracteristicasHomer)
+                            .addComponent(lblAzulHomer)
+                            .addComponent(lblMarromHomer)
+                            .addComponent(lblSapatoHomer))
+                        .addGap(30, 30, 30)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -67,7 +122,26 @@ public class Preditor extends javax.swing.JFrame {
                     .addComponent(btnSelecionarImagem)
                     .addComponent(txtCaminhoImagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(lblImagem, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblImagem, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnExtraiCaracteristicas)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblCaracteristicasBart)
+                            .addComponent(lblCaracteristicasHomer))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblLaranjaBart)
+                            .addComponent(lblAzulHomer))
+                        .addGap(29, 29, 29)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblAzulCalcao)
+                            .addComponent(lblMarromHomer))
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblAzulSapato)
+                            .addComponent(lblSapatoHomer))))
                 .addContainerGap(119, Short.MAX_VALUE))
         );
 
@@ -98,6 +172,18 @@ public class Preditor extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btnSelecionarImagemActionPerformed
+
+    private void btnExtraiCaracteristicasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExtraiCaracteristicasActionPerformed
+    
+        ExtratorImagem extrator = new ExtratorImagem();
+        float[] caracteristicas = extrator.extrairCaracteristicas(txtCaminhoImagem.getText());//Recebe o retorno do método da classe ExtratorCaracteristicas
+        lblLaranjaBart.setText(String.valueOf(caracteristicas[0]));
+        lblAzulCalcao.setText(String.valueOf(caracteristicas[1]));
+        lblAzulSapato.setText(String.valueOf(caracteristicas[2]));
+        lblAzulHomer.setText(String.valueOf(caracteristicas[3]));
+        lblMarromHomer.setText(String.valueOf(caracteristicas[4]));
+        lblSapatoHomer.setText(String.valueOf(caracteristicas[5]));
+    }//GEN-LAST:event_btnExtraiCaracteristicasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -135,8 +221,17 @@ public class Preditor extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnExtraiCaracteristicas;
     private javax.swing.JButton btnSelecionarImagem;
+    private javax.swing.JLabel lblAzulCalcao;
+    private javax.swing.JLabel lblAzulHomer;
+    private javax.swing.JLabel lblAzulSapato;
+    private javax.swing.JLabel lblCaracteristicasBart;
+    private javax.swing.JLabel lblCaracteristicasHomer;
     private javax.swing.JLabel lblImagem;
+    private javax.swing.JLabel lblLaranjaBart;
+    private javax.swing.JLabel lblMarromHomer;
+    private javax.swing.JLabel lblSapatoHomer;
     private javax.swing.JTextField txtCaminhoImagem;
     // End of variables declaration//GEN-END:variables
 }
