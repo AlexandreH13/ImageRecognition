@@ -38,11 +38,11 @@ public class ExtratorCaracteristicas {
         File diretorio = new File("src\\imagens");
         File[] arquivos = diretorio.listFiles();
 
-        // Características do Homer e Bart
+        // Características do Homer e Bart. Características descriminantes. Valores dos pixels.
         float laranjaCamisaBart, azulCalcaoBart, azulSapatoBart;
         float azulCalcaHomer, marromBocaHomer, cinzaSapatoHomer;
         
-        // Definição do vetor de características
+        // Definição do vetor de características. 293 imagens, 3 características para o Bart e 3 para o Homer e a classe
         float[][] caracteristicas = new float[293][7];
 
         // Percorre todas as imagens do diretório
@@ -56,11 +56,11 @@ public class ExtratorCaracteristicas {
 
             // Carrega cada imagem do diretório
             IplImage imagemOriginal = cvLoadImage(diretorio.getAbsolutePath() + "\\" + arquivos[i].getName());
-            CvSize tamanhoImagemOriginal = cvGetSize(imagemOriginal);
+            CvSize tamanhoImagemOriginal = cvGetSize(imagemOriginal); //Retorna o tamanho da imagem
             
             // Imagem processada - tamanho, profundidade de cores e número de canais de cores
             IplImage imagemProcessada = cvCreateImage(tamanhoImagemOriginal, IPL_DEPTH_8U, 3);
-            imagemProcessada = cvCloneImage(imagemOriginal);
+            imagemProcessada = cvCloneImage(imagemOriginal);//Clona a imagem original
 
             // Definição da classe - Homer ou Bart
             if (arquivos[i].getName().charAt(0) == 'b') {
@@ -85,6 +85,8 @@ public class ExtratorCaracteristicas {
                     blue = scalarExtraiRgb.val(0);
                     green = scalarExtraiRgb.val(1);
                     red = scalarExtraiRgb.val(2);
+                    
+                    //Aqui as imagens são processadas. Suas características são pintadas com cores diferentes.
 
                     // Camisa laranja do Bart                    
                     if (blue >= 11 && blue <= 22 && 
