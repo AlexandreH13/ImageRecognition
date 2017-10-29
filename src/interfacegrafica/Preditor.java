@@ -5,24 +5,61 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import opencv.ExtratorImagem;
+import weka.classifiers.bayes.NaiveBayes;
+import weka.core.DenseInstance;
+import weka.core.Instance;
+import weka.core.Instances;
+import weka.core.converters.ConverterUtils.DataSource;
 
 /**
  *
  * @author Alexandre
  */
 public class Preditor extends javax.swing.JFrame {
-
-    /**
-     * Creates new form Preditor
-     */
+    
+    //Classe do WEKA que armaena a base de dados
+    private Instances instancias;
+    
     public Preditor() {
         initComponents();
+    }
+    
+    public void classificaNaiveBayes() throws Exception{
+        NaiveBayes nb = new NaiveBayes();
+        //Cração da tabela de probabilidade
+        nb.buildClassifier(instancias);
+        
+        //Criação de novo registro
+        Instance novo = new DenseInstance(instancias.numAttributes());
+        novo.setDataset(instancias);
+        novo.setValue(0, Float.parseFloat(lblLaranjaBart.getText()));
+        novo.setValue(1, Float.parseFloat(lblAzulCalcao.getText()));
+        novo.setValue(2, Float.parseFloat(lblAzulSapato.getText()));
+        novo.setValue(3, Float.parseFloat(lblMarromHomer.getText()));
+        novo.setValue(4, Float.parseFloat(lblAzulHomer.getText()));
+        novo.setValue(5, Float.parseFloat(lblSapatoHomer.getText()));
+        
+        //Previsão
+        double resultado[] = nb.distributionForInstance(novo);//Distribuiçao da probabilidade da instancia passada como parâmetro
+        DecimalFormat df = new DecimalFormat("#,###.000");
+        lblNaiveBart.setText("Bart: "+ df.format(resultado[0]));
+        lblNaiveHomer.setText("Homer: "+ df.format(resultado[1]));
+    }
+    
+    public void carregaWeka()throws Exception{
+        //Caminho da base de dados
+        DataSource ds = new DataSource("C:\\udemy\\machineLearningWeka\\caracteristicas.arff");
+        //Atribui a base de dados para instancias
+        instancias = ds.getDataSet();
+        instancias.setClassIndex(6);
+        //System.out.println(instancias.toString());
     }
 
     @SuppressWarnings("unchecked")
@@ -41,6 +78,10 @@ public class Preditor extends javax.swing.JFrame {
         lblAzulHomer = new javax.swing.JLabel();
         lblMarromHomer = new javax.swing.JLabel();
         lblSapatoHomer = new javax.swing.JLabel();
+        btnClassificar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        lblNaiveBart = new javax.swing.JLabel();
+        lblNaiveHomer = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,6 +117,19 @@ public class Preditor extends javax.swing.JFrame {
 
         lblSapatoHomer.setText("jLabel6");
 
+        btnClassificar.setText("Classificar");
+        btnClassificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClassificarActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Naive Bayes");
+
+        lblNaiveBart.setText("Bart:");
+
+        lblNaiveHomer.setText("Homer:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -94,24 +148,31 @@ public class Preditor extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btnExtraiCaracteristicas)
-                                        .addGap(0, 0, Short.MAX_VALUE))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(btnExtraiCaracteristicas)
+                                                .addGap(0, 0, Short.MAX_VALUE))
+                                            .addComponent(lblCaracteristicasBart, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(77, 77, 77))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(lblCaracteristicasBart, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblLaranjaBart)
+                                            .addComponent(lblAzulCalcao)
+                                            .addComponent(lblAzulSapato))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addGap(77, 77, 77))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblCaracteristicasHomer)
+                                    .addComponent(lblAzulHomer)
+                                    .addComponent(lblMarromHomer)
+                                    .addComponent(lblSapatoHomer)
+                                    .addComponent(btnClassificar))
+                                .addGap(30, 30, 30))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblLaranjaBart)
-                                    .addComponent(lblAzulCalcao)
-                                    .addComponent(lblAzulSapato))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblCaracteristicasHomer)
-                            .addComponent(lblAzulHomer)
-                            .addComponent(lblMarromHomer)
-                            .addComponent(lblSapatoHomer))
-                        .addGap(30, 30, 30)))
+                                    .addComponent(lblNaiveBart)
+                                    .addComponent(jLabel1)
+                                    .addComponent(lblNaiveHomer))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -125,7 +186,9 @@ public class Preditor extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblImagem, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnExtraiCaracteristicas)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnExtraiCaracteristicas)
+                            .addComponent(btnClassificar))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblCaracteristicasBart)
@@ -141,7 +204,13 @@ public class Preditor extends javax.swing.JFrame {
                         .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblAzulSapato)
-                            .addComponent(lblSapatoHomer))))
+                            .addComponent(lblSapatoHomer))
+                        .addGap(29, 29, 29)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblNaiveBart)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblNaiveHomer)))
                 .addContainerGap(119, Short.MAX_VALUE))
         );
 
@@ -185,6 +254,15 @@ public class Preditor extends javax.swing.JFrame {
         lblSapatoHomer.setText(String.valueOf(caracteristicas[5]));
     }//GEN-LAST:event_btnExtraiCaracteristicasActionPerformed
 
+    private void btnClassificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClassificarActionPerformed
+        try {
+            carregaWeka();
+            classificaNaiveBayes();
+        } catch (Exception ex) {
+            Logger.getLogger(Preditor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnClassificarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -221,8 +299,10 @@ public class Preditor extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnClassificar;
     private javax.swing.JButton btnExtraiCaracteristicas;
     private javax.swing.JButton btnSelecionarImagem;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblAzulCalcao;
     private javax.swing.JLabel lblAzulHomer;
     private javax.swing.JLabel lblAzulSapato;
@@ -231,6 +311,8 @@ public class Preditor extends javax.swing.JFrame {
     private javax.swing.JLabel lblImagem;
     private javax.swing.JLabel lblLaranjaBart;
     private javax.swing.JLabel lblMarromHomer;
+    private javax.swing.JLabel lblNaiveBart;
+    private javax.swing.JLabel lblNaiveHomer;
     private javax.swing.JLabel lblSapatoHomer;
     private javax.swing.JTextField txtCaminhoImagem;
     // End of variables declaration//GEN-END:variables

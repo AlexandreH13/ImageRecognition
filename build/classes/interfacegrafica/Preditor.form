@@ -37,33 +37,43 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="btnExtraiCaracteristicas" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="btnExtraiCaracteristicas" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                          </Group>
+                                          <Component id="lblCaracteristicasBart" alignment="0" min="-2" pref="125" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="-2" pref="77" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Component id="lblCaracteristicasBart" min="-2" pref="125" max="-2" attributes="0"/>
-                                      <EmptySpace min="72" max="32767" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="lblLaranjaBart" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lblAzulCalcao" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lblAzulSapato" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="32767" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace min="-2" pref="77" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="lblLaranjaBart" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblAzulCalcao" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblAzulSapato" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblCaracteristicasHomer" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblAzulHomer" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblMarromHomer" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblSapatoHomer" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnClassificar" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="lblNaiveBart" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblNaiveHomer" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblCaracteristicasHomer" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblAzulHomer" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblMarromHomer" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblSapatoHomer" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -82,7 +92,10 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="lblImagem" min="-2" pref="272" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <Component id="btnExtraiCaracteristicas" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="btnExtraiCaracteristicas" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnClassificar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="lblCaracteristicasBart" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -103,6 +116,12 @@
                           <Component id="lblAzulSapato" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="lblSapatoHomer" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="lblNaiveBart" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblNaiveHomer" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace pref="119" max="32767" attributes="0"/>
@@ -176,6 +195,29 @@
     <Component class="javax.swing.JLabel" name="lblSapatoHomer">
       <Properties>
         <Property name="text" type="java.lang.String" value="jLabel6"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnClassificar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Classificar"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnClassificarActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Naive Bayes"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblNaiveBart">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Bart:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblNaiveHomer">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Homer:"/>
       </Properties>
     </Component>
   </SubComponents>
