@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import opencv.ExtratorImagem;
 import weka.classifiers.bayes.NaiveBayes;
+import weka.classifiers.lazy.IBk;
 import weka.classifiers.rules.JRip;
 import weka.classifiers.rules.OneR;
 import weka.classifiers.trees.J48;
@@ -34,59 +35,24 @@ public class Preditor extends javax.swing.JFrame {
         initComponents();
     }
     
-    public void classificaNaiveBayes() throws Exception{
+    public void classifica() throws Exception{
+    
         NaiveBayes nb = new NaiveBayes();
         //Cração da tabela de probabilidade
         nb.buildClassifier(instancias);
         
-        //Criação de novo registro
-        Instance novo = new DenseInstance(instancias.numAttributes());
-        novo.setDataset(instancias);
-        novo.setValue(0, Float.parseFloat(lblLaranjaBart.getText()));
-        novo.setValue(1, Float.parseFloat(lblAzulCalcao.getText()));
-        novo.setValue(2, Float.parseFloat(lblAzulSapato.getText()));
-        novo.setValue(3, Float.parseFloat(lblMarromHomer.getText()));
-        novo.setValue(4, Float.parseFloat(lblAzulHomer.getText()));
-        novo.setValue(5, Float.parseFloat(lblSapatoHomer.getText()));
-        
-        //Previsão
-        double resultado[] = nb.distributionForInstance(novo);//Distribuiçao da probabilidade da instancia passada como parâmetro
-        DecimalFormat df = new DecimalFormat("#,###.000");
-        lblNaiveBart.setText("Bart: "+ df.format(resultado[0]));
-        lblNaiveHomer.setText("Homer: "+ df.format(resultado[1]));
-    }
-    
-    public void classificaJ48() throws Exception{
-    
         J48 arvore = new J48();
         //Criação da árvore
         arvore.buildClassifier(instancias);
         
-        //Criação de novo registro
-        Instance novo = new DenseInstance(instancias.numAttributes());
-        novo.setDataset(instancias);
-        novo.setValue(0, Float.parseFloat(lblLaranjaBart.getText()));
-        novo.setValue(1, Float.parseFloat(lblAzulCalcao.getText()));
-        novo.setValue(2, Float.parseFloat(lblAzulSapato.getText()));
-        novo.setValue(3, Float.parseFloat(lblMarromHomer.getText()));
-        novo.setValue(4, Float.parseFloat(lblAzulHomer.getText()));
-        novo.setValue(5, Float.parseFloat(lblSapatoHomer.getText()));
-        
-        //Previsão
-        double resultado[] = arvore.distributionForInstance(novo);//Distribuiçao da probabilidade da instancia passada como parâmetro
-        DecimalFormat df = new DecimalFormat("#,###.000");
-        lblJ48bart.setText("Bart: "+ df.format(resultado[0]));
-        lblJ48homer.setText("Homer: "+ df.format(resultado[1]));
-    }
-    
-    public void classificaRegras() throws Exception{
-    
         OneR oner = new OneR();
-        JRip jrip = new JRip();
-        
+        JRip jrip = new JRip();   
         oner.buildClassifier(instancias);
         jrip.buildClassifier(instancias);
         
+        IBk ibk = new IBk(3); // O prâmetro é o número do K.
+        ibk.buildClassifier(instancias);
+        
         //Criação de novo registro
         Instance novo = new DenseInstance(instancias.numAttributes());
         novo.setDataset(instancias);
@@ -97,16 +63,29 @@ public class Preditor extends javax.swing.JFrame {
         novo.setValue(4, Float.parseFloat(lblAzulHomer.getText()));
         novo.setValue(5, Float.parseFloat(lblSapatoHomer.getText()));
         
-        //Previsão
-        double resultadoOneR[] = oner.distributionForInstance(novo);//Distribuiçao da probabilidade da instancia passada como parâmetro
-        double resultadoJRip[] = jrip.distributionForInstance(novo);
-        
+        //Previsão -- Naive Bayes
+        double resultadoNaive[] = nb.distributionForInstance(novo);//Distribuiçao da probabilidade da instancia passada como parâmetro
         DecimalFormat df = new DecimalFormat("#,###.000");
-        lblOneRBart.setText("Bart: "+ df.format(resultadoOneR[0]));
-        lblOneRHomer.setText("Homer: "+ df.format(resultadoOneR[1]));
+        lblNaiveBart.setText("Bart: "+ df.format(resultadoNaive[0]));
+        lblNaiveHomer.setText("Homer: "+ df.format(resultadoNaive[1]));
         
+        //Previsão --Árvore
+        double resultadoJ48[] = arvore.distributionForInstance(novo);//Distribuiçao da probabilidade da instancia passada como parâmetro
+        lblJ48bart.setText("Bart: "+ df.format(resultadoJ48[0]));
+        lblJ48homer.setText("Homer: "+ df.format(resultadoJ48[1]));
+        
+        //Previsão -- Regras
+        double resultadoOneR[] = oner.distributionForInstance(novo);//Distribuiçao da probabilidade da instancia passada como parâmetro
+        double resultadoJRip[] = jrip.distributionForInstance(novo);     
+        lblOneRBart.setText("Bart: "+ df.format(resultadoOneR[0]));
+        lblOneRHomer.setText("Homer: "+ df.format(resultadoOneR[1]));   
         lblJRipBart.setText("Bart: "+ df.format(resultadoJRip[0]));
         lblJRipHomer.setText("Homer: "+ df.format(resultadoJRip[1]));
+        
+        double resultadoIbk[] = ibk.distributionForInstance(novo);
+        lblibkBart.setText("Bart: " + df.format(resultadoIbk[0]));
+        lblIbkHomer.setText("Hmer: " + df.format(resultadoIbk[1]));
+    
     }
     
     public void carregaWeka()throws Exception{
@@ -147,6 +126,9 @@ public class Preditor extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         lblJRipBart = new javax.swing.JLabel();
         lblJRipHomer = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        lblibkBart = new javax.swing.JLabel();
+        lblIbkHomer = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -213,6 +195,12 @@ public class Preditor extends javax.swing.JFrame {
 
         lblJRipHomer.setText("Homer");
 
+        jLabel5.setText("KNN/IBK");
+
+        lblibkBart.setText("Bart");
+
+        lblIbkHomer.setText("Homer");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -246,7 +234,10 @@ public class Preditor extends javax.swing.JFrame {
                                     .addComponent(lblCaracteristicasBart, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lblLaranjaBart)
                                     .addComponent(lblAzulCalcao)
-                                    .addComponent(lblAzulSapato))))
+                                    .addComponent(lblAzulSapato)))
+                            .addComponent(jLabel5)
+                            .addComponent(lblibkBart)
+                            .addComponent(lblIbkHomer))
                         .addGap(67, 67, 67)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
@@ -319,7 +310,13 @@ public class Preditor extends javax.swing.JFrame {
                             .addComponent(lblJ48homer)
                             .addComponent(lblOneRHomer)
                             .addComponent(lblJRipHomer))))
-                .addContainerGap(119, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblibkBart)
+                .addGap(7, 7, 7)
+                .addComponent(lblIbkHomer)
+                .addContainerGap())
         );
 
         pack();
@@ -365,9 +362,7 @@ public class Preditor extends javax.swing.JFrame {
     private void btnClassificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClassificarActionPerformed
         try {
             carregaWeka();
-            classificaNaiveBayes();
-            classificaJ48();
-            classificaRegras(); 
+            classifica();
         } catch (Exception ex) {
             Logger.getLogger(Preditor.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -416,11 +411,13 @@ public class Preditor extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel lblAzulCalcao;
     private javax.swing.JLabel lblAzulHomer;
     private javax.swing.JLabel lblAzulSapato;
     private javax.swing.JLabel lblCaracteristicasBart;
     private javax.swing.JLabel lblCaracteristicasHomer;
+    private javax.swing.JLabel lblIbkHomer;
     private javax.swing.JLabel lblImagem;
     private javax.swing.JLabel lblJ48bart;
     private javax.swing.JLabel lblJ48homer;
@@ -433,6 +430,7 @@ public class Preditor extends javax.swing.JFrame {
     private javax.swing.JLabel lblOneRBart;
     private javax.swing.JLabel lblOneRHomer;
     private javax.swing.JLabel lblSapatoHomer;
+    private javax.swing.JLabel lblibkBart;
     private javax.swing.JTextField txtCaminhoImagem;
     // End of variables declaration//GEN-END:variables
 }
