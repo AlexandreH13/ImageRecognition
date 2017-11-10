@@ -14,6 +14,7 @@ import javax.swing.JFileChooser;
 import opencv.ExtratorImagem;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.functions.LibSVM;
+import weka.classifiers.functions.MultilayerPerceptron;
 import weka.classifiers.lazy.IBk;
 import weka.classifiers.rules.JRip;
 import weka.classifiers.rules.OneR;
@@ -61,6 +62,9 @@ public class Preditor extends javax.swing.JFrame {
                             LibSVM.TAGS_KERNELTYPE));
         svm.buildClassifier(instancias);
         
+        MultilayerPerceptron multi = new MultilayerPerceptron();
+        multi.buildClassifier(instancias);
+        
         //Criação de novo registro
         Instance novo = new DenseInstance(instancias.numAttributes());
         novo.setDataset(instancias);
@@ -98,6 +102,11 @@ public class Preditor extends javax.swing.JFrame {
         double resultadoSVM[] = svm.distributionForInstance(novo);
         lblSVMBart.setText("Bart: " + df.format(resultadoSVM[0]));
         lblSVMHomer.setText("Homer: " + df.format(resultadoSVM[1]));
+        
+        //Previsão Redes Neurais
+        double resultadoMultilayer[] = multi.distributionForInstance(novo);
+        lblNeuralBart.setText("Bart: " + df.format(resultadoMultilayer[0]));
+        lblNeuralHomer.setText("Homer: " + df.format(resultadoMultilayer[1]));
     
     }
     
@@ -145,6 +154,9 @@ public class Preditor extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         lblSVMBart = new javax.swing.JLabel();
         lblSVMHomer = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        lblNeuralBart = new javax.swing.JLabel();
+        lblNeuralHomer = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -223,6 +235,12 @@ public class Preditor extends javax.swing.JFrame {
 
         lblSVMHomer.setText("Homer");
 
+        jLabel7.setText("Neural Network");
+
+        lblNeuralBart.setText("Bart");
+
+        lblNeuralHomer.setText("Homer");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -238,54 +256,29 @@ public class Preditor extends javax.swing.JFrame {
                         .addComponent(lblImagem, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblNaiveBart)
-                                            .addComponent(lblNaiveHomer))
-                                        .addGap(87, 87, 87)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblJ48bart)
-                                            .addComponent(lblJ48homer)))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel1)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabel2))
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(btnExtraiCaracteristicas)
-                                            .addComponent(lblCaracteristicasBart, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(lblLaranjaBart)
-                                            .addComponent(lblAzulCalcao)
-                                            .addComponent(lblAzulSapato)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel6)))
-                                .addGap(67, 67, 67)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblAzulHomer)
-                                            .addComponent(lblMarromHomer)
-                                            .addComponent(lblSapatoHomer)
-                                            .addComponent(btnClassificar)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addComponent(lblJRipBart)
-                                                .addComponent(jLabel4)
-                                                .addComponent(lblCaracteristicasHomer))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(100, 100, 100)
-                                                .addComponent(lblJRipHomer)))
-                                        .addGap(19, 19, 19))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblOneRBart)
-                                            .addComponent(lblOneRHomer))
-                                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblNaiveBart)
+                                        .addComponent(lblNaiveHomer))
+                                    .addGap(87, 87, 87)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblJ48bart)
+                                        .addComponent(lblJ48homer)))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(jLabel1)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel2))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnExtraiCaracteristicas)
+                                    .addComponent(lblCaracteristicasBart, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblLaranjaBart)
+                                    .addComponent(lblAzulCalcao)
+                                    .addComponent(lblAzulSapato))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel5)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel6)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblibkBart)
@@ -293,7 +286,32 @@ public class Preditor extends javax.swing.JFrame {
                                 .addGap(98, 98, 98)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblSVMHomer)
-                                    .addComponent(lblSVMBart))
+                                    .addComponent(lblSVMBart))))
+                        .addGap(56, 56, 56)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblAzulHomer)
+                                    .addComponent(lblMarromHomer)
+                                    .addComponent(lblSapatoHomer)
+                                    .addComponent(btnClassificar)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(lblJRipBart)
+                                        .addComponent(jLabel4)
+                                        .addComponent(lblCaracteristicasHomer))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(100, 100, 100)
+                                        .addComponent(lblJRipHomer)))
+                                .addGap(19, 19, 19))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblNeuralBart)
+                                    .addComponent(lblOneRBart)
+                                    .addComponent(lblOneRHomer)
+                                    .addComponent(jLabel7)
+                                    .addComponent(lblNeuralHomer))
                                 .addGap(0, 0, Short.MAX_VALUE))))))
         );
         layout.setVerticalGroup(
@@ -347,15 +365,18 @@ public class Preditor extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jLabel6))
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblibkBart)
-                    .addComponent(lblSVMBart))
+                    .addComponent(lblSVMBart)
+                    .addComponent(lblNeuralBart))
                 .addGap(7, 7, 7)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblIbkHomer)
-                    .addComponent(lblSVMHomer))
+                    .addComponent(lblSVMHomer)
+                    .addComponent(lblNeuralHomer))
                 .addContainerGap())
         );
 
@@ -453,6 +474,7 @@ public class Preditor extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel lblAzulCalcao;
     private javax.swing.JLabel lblAzulHomer;
     private javax.swing.JLabel lblAzulSapato;
@@ -468,6 +490,8 @@ public class Preditor extends javax.swing.JFrame {
     private javax.swing.JLabel lblMarromHomer;
     private javax.swing.JLabel lblNaiveBart;
     private javax.swing.JLabel lblNaiveHomer;
+    private javax.swing.JLabel lblNeuralBart;
+    private javax.swing.JLabel lblNeuralHomer;
     private javax.swing.JLabel lblOneRBart;
     private javax.swing.JLabel lblOneRHomer;
     private javax.swing.JLabel lblSVMBart;
